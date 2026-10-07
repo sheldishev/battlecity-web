@@ -101,7 +101,17 @@ html.touch-ui canvas {
   gap: 6px;
 }
 
+.menu-keys {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+  align-self: center;
+}
+
 .pad button,
+.mute,
 .pause,
 .fire {
   margin: 0;
@@ -136,6 +146,7 @@ html.touch-ui canvas {
 .arrow.right { transform: rotate(90deg); }
 
 .pad button.is-down,
+.mute.is-down,
 .pause.is-down,
 .fire.is-down,
 .fire:active {
@@ -147,11 +158,11 @@ html.touch-ui canvas {
   border-bottom-color: #fff8e8;
 }
 
+.mute,
 .pause {
   width: 76px;
   height: 36px;
   flex: 0 0 auto;
-  align-self: center;
   font-size: 12px;
 }
 
@@ -167,6 +178,7 @@ html.touch-ui canvas {
     grid-template-rows: 58px 58px 58px;
   }
 
+  .mute,
   .pause {
     width: 64px;
     height: 32px;

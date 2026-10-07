@@ -3127,17 +3127,33 @@
     button.classList.toggle("is-down", game.paused);
   }
 
+  function syncMuteButton() {
+    const button = document.querySelector(".mute");
+    if (!button) return;
+    const muted = typeof soundEnabled !== "undefined" && !soundEnabled;
+    button.classList.toggle("is-down", muted);
+    button.setAttribute("aria-pressed", muted ? "true" : "false");
+    button.setAttribute("aria-label", muted ? "Unmute" : "Mute");
+  }
+
+  function toggleMute() {
+    if (typeof toggleSound !== "function") return;
+    const on = toggleSound();
+    if (on && game.engine) play(sfxStartEngine);
+    syncMuteButton();
+  }
+
   function syncHint() {
     const hint = document.getElementById("hint");
     if (!hint) return;
     const rows = {
-      title: [["UP DOWN", "Select"], ["SPACE", "Start"]],
-      select: [["UP DOWN", "Stage"], ["SPACE", "Start"]],
-      play: [["ARROWS", "Move"], ["SPACE", "Fire"], ["ESC", "Pause"]],
-      intro: [["ARROWS", "Move"], ["SPACE", "Fire"], ["ESC", "Pause"]],
-      over: [["SPACE", "Continue"]],
-      win: [["SPACE", "Menu"]],
-      paused: [["UP DOWN", "Select"], ["SPACE", "Choose"], ["ESC", "Resume"]],
+      title: [["UP DOWN", "Select"], ["SPACE", "Start"], ["M", "Mute"]],
+      select: [["UP DOWN", "Stage"], ["SPACE", "Start"], ["M", "Mute"]],
+      play: [["ARROWS", "Move"], ["SPACE", "Fire"], ["ESC", "Pause"], ["M", "Mute"]],
+      intro: [["ARROWS", "Move"], ["SPACE", "Fire"], ["ESC", "Pause"], ["M", "Mute"]],
+      over: [["SPACE", "Continue"], ["M", "Mute"]],
+      win: [["SPACE", "Menu"], ["M", "Mute"]],
+      paused: [["UP DOWN", "Select"], ["SPACE", "Choose"], ["ESC", "Resume"], ["M", "Mute"]],
       cleared: [],
       dead: [],
     };
@@ -3155,6 +3171,7 @@
     drawHud();
     syncFireLabel();
     syncPauseButton();
+    syncMuteButton();
     syncHint();
     if (game.mode === "intro") overlay("STAGE " + (game.levelIndex + 1), theme().name);
     if (game.mode === "cleared") overlay("STAGE CLEAR");
@@ -3217,8 +3234,12 @@
   }
 
   window.addEventListener("keydown", (e) => {
-    if (CODE_DIR[e.code] !== undefined || e.code === "Space" || e.code === "Escape") e.preventDefault();
+    if (CODE_DIR[e.code] !== undefined || e.code === "Space" || e.code === "Escape" || e.code === "KeyM") e.preventDefault();
     if (e.repeat) return;
+    if (e.code === "KeyM") {
+      toggleMute();
+      return;
+    }
     if (e.code === "Escape") {
       togglePause();
       return;
@@ -3274,6 +3295,16 @@
       if (e.pointerType === "mouse" && e.button !== 0) return;
       e.preventDefault();
       togglePause();
+    }, { passive: false });
+  }
+
+  const muteButton = document.querySelector(".mute");
+  if (muteButton) {
+    muteButton.addEventListener("contextmenu", (e) => e.preventDefault());
+    muteButton.addEventListener("pointerdown", (e) => {
+      if (e.pointerType === "mouse" && e.button !== 0) return;
+      e.preventDefault();
+      toggleMute();
     }, { passive: false });
   }
 

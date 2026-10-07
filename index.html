@@ -14,7 +14,7 @@
       if (touch || handheld) document.documentElement.classList.add("touch-ui");
     })();
   </script>
-  <link rel="stylesheet" href="style.css?v=8">
+  <link rel="stylesheet" href="style.css?v=9">
 </head>
 <body>
   <main>
@@ -27,11 +27,14 @@
         <button type="button" data-dir="down" aria-label="Down"><span class="arrow down"></span></button>
         <button type="button" data-dir="right" aria-label="Right"><span class="arrow right"></span></button>
       </div>
-      <button type="button" class="pause" aria-label="Pause">PAUSE</button>
+      <div class="menu-keys">
+        <button type="button" class="mute" aria-label="Mute" aria-pressed="false">MUTE</button>
+        <button type="button" class="pause" aria-label="Pause">PAUSE</button>
+      </div>
       <button type="button" class="fire" aria-label="Start">START</button>
     </div>
   </main>
   <script src="sound.js?v=2"></script>
-  <script src="game.js?v=53"></script>
+  <script src="game.js?v=54"></script>
 </body>
 </html>
