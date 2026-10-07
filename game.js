@@ -1190,9 +1190,6 @@
       travel: 0,
       warm: 0.45,
       wish: DOWN,
-      cool: 0.8 + Math.random(),
-      retarget: 0.4 + Math.random(),
-      stuck: 0,
     };
   }
 

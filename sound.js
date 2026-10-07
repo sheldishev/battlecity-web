@@ -284,15 +284,14 @@ for (let i = 0; i < 28; i++) {
 
 // ─── Helper: update vol/envelope state from volByte ─────────────
 function updateVolState(s) {
-  const constVol = !!(s.volByte & 0x10);
-  s.useEnvelope = !constVol;
+  const constantVolume = (s.volByte & 0x10) !== 0;
+  s.useEnvelope = !constantVolume;
   s.duty = (s.volByte >> 6) & 3;
-  if (constVol) {
+  if (constantVolume) {
     s.vol = s.volByte & 0x0F;
   } else {
     s.envPeriod = s.volByte & 0x0F;
-    s.envLoop = !!(s.volByte & 0x20);
-    // Don't reset envVol here — only on note start
+    s.envLoop = (s.volByte & 0x20) !== 0;
   }
 }
 
@@ -311,17 +310,9 @@ function playSound(slotIdx) {
   // Parse header
   const chSel = seq[0];  // 1=sq1, 2=sq2, 3=tri, 4=noise
   s.channel = (chSel >= 1 && chSel <= 4) ? chSel - 1 : 0;
-  s.volByte = seq[1];    // duty/volume register
-
-  // Initialize volume / envelope state
-  const constVol = !!(seq[1] & 0x10);
-  s.useEnvelope = !constVol;
-  s.duty = (seq[1] >> 6) & 3;
-  if (constVol) {
-    s.vol = seq[1] & 0x0F;
-  } else {
-    s.envPeriod = seq[1] & 0x0F;
-    s.envLoop = !!(seq[1] & 0x20);
+  s.volByte = seq[1];
+  updateVolState(s);
+  if (s.useEnvelope) {
     s.envVol = 15;
     s.envDivider = s.envPeriod;
     s.envStartFlag = true;
@@ -335,7 +326,7 @@ function playSound(slotIdx) {
     if (sweep & 0x80) {
       s.sweepEnabled = true;
       s.sweepPeriod = (sweep >> 4) & 7;
-      s.sweepNegate = !!(sweep & 0x08);
+      s.sweepNegate = (sweep & 0x08) !== 0;
       s.sweepShift = sweep & 7;
       s.sweepDivider = s.sweepPeriod;
     }
@@ -492,9 +483,9 @@ function soundTick() {
         if (s.pos < seq.length) {
           const sweep = seq[s.pos++];
           if (s.channel < 2) {
-            s.sweepEnabled = !!(sweep & 0x80);
+            s.sweepEnabled = (sweep & 0x80) !== 0;
             s.sweepPeriod = (sweep >> 4) & 7;
-            s.sweepNegate = !!(sweep & 0x08);
+            s.sweepNegate = (sweep & 0x08) !== 0;
             s.sweepShift = sweep & 7;
             s.sweepDivider = s.sweepPeriod;
           }
