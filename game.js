@@ -2355,9 +2355,9 @@
     return Array.isArray(pal) ? pal : NES_PAL[pal];
   }
 
-  function bakedTile(tile, pal, transparent) {
+  function bakedTile(tile, pal, transparent, ink) {
     const colors = paletteOf(pal);
-    const key = tile + "|" + colors.join("|") + "|" + (transparent ? 1 : 0);
+    const key = tile + "|" + colors.join("|") + "|" + (transparent ? 1 : 0) + "|" + (ink || "");
     const cached = tileCache.get(key);
     if (cached) return cached;
     const sheet = document.createElement("canvas");
@@ -2371,7 +2371,21 @@
     tctx.clearRect(0, 0, 16, 16);
     for (let y = 0; y < 8; y++) {
       for (let x = 0; x < 8; x++) {
-        const r = data[(y * 8 + x) * 4];
+        const i = (y * 8 + x) * 4;
+        const r = data[i];
+        const g = data[i + 1];
+        const b = data[i + 2];
+        // The sheet uses pure black for ink and #202020 for the empty cell.
+        if (r < 0x10 && g < 0x10 && b < 0x10) {
+          if (ink) {
+            tctx.fillStyle = ink;
+            tctx.fillRect(x * 2, y * 2, 2, 2);
+          } else if (!transparent) {
+            tctx.fillStyle = colors[0];
+            tctx.fillRect(x * 2, y * 2, 2, 2);
+          }
+          continue;
+        }
         const idx = r < 0x2b ? 0 : r < 0x7f ? 1 : r < 0xd5 ? 2 : 3;
         if (transparent && idx === 0) continue;
         tctx.fillStyle = colors[idx];
@@ -2382,20 +2396,20 @@
     return sheet;
   }
 
-  function blitTile(tile, pal, x, y, transparent, scale) {
+  function blitTile(tile, pal, x, y, transparent, scale, ink) {
     if (!chrReady) return false;
-    const img = bakedTile(tile, pal, transparent);
+    const img = bakedTile(tile, pal, transparent, ink);
     const s = scale || 2;
     if (s === 2) ctx.drawImage(img, x, y);
     else ctx.drawImage(img, x, y, 8 * s, 8 * s);
     return true;
   }
 
-  function blitSprite(tiles, pal, x, y, pt1) {
+  function blitSprite(tiles, pal, x, y, pt1, ink) {
     if (!chrReady) return false;
     const bank = pt1 ? 256 : 0;
     for (let i = 0; i < tiles.length; i++) {
-      blitTile(bank + tiles[i], pal, x + (i % 2) * 16, y + ((i / 2) | 0) * 16, true);
+      blitTile(bank + tiles[i], pal, x + (i % 2) * 16, y + ((i / 2) | 0) * 16, true, 2, ink);
     }
     return true;
   }
@@ -2990,7 +3004,10 @@
     drawNesText("SCORE", left, 46, 2);
     drawNesText(String(game.score), left, 64, 2);
     drawNesText("STAGE", left, 84, 2);
-    blitSprite([0x6c, 0xfc, 0x6d, 0xfd], 0, left, 100, false);
+    // Light cloth and a visible pole. Pure black in the sheet used to vanish on this panel.
+    const mark = ["#000000", "#E45C10", "#F83800", "#000000"];
+    const ink = "#8d8272";
+    blitSprite([0x6c, 0xfc, 0x6d, 0xfd], mark, left, 100, false, ink);
     drawNesText(String(game.mode === "title" ? 1 : game.levelIndex + 1), left + 40, 108, 2);
     if (game.mode !== "title") drawNesText(theme().name, left, 136, 2);
     const roster =
@@ -3001,7 +3018,7 @@
             .map(() => true)
             .concat(game.queue.map(() => true));
     for (let i = 0; i < roster.length; i++) {
-      blitTile(0x6a, 0, left + (i % 2) * 18, 156 + Math.floor(i / 2) * 13, true);
+      blitTile(0x6a, mark, left + (i % 2) * 18, 154 + Math.floor(i / 2) * 16, true, 2, ink);
     }
     const icons = [];
     if (game.player && game.player.helmet > 0) icons.push("helmet");
@@ -3011,12 +3028,12 @@
     if (game.player && game.player.boat) icons.push("boat");
     icons.forEach((kind, i) => {
       const x = left + i * 36;
-      if (!drawBonus(kind, x, 304)) {
+      if (!drawBonus(kind, x, 322)) {
         const tile = PICKUP_TILE[kind];
-        if (tile != null) blitSprite(quadFrom(tile), 6, x, 304, false);
+        if (tile != null) blitSprite(quadFrom(tile), 6, x, 322, false);
       }
     });
-    blitTile(0x14, 0, left, FIELD - 52, true);
+    blitTile(0x14, ["#000000", "#f2c31a", "#8d6a0b", "#000000"], left, FIELD - 52, true, 2, ink);
     drawNesText(String(game.reserves), left + 22, FIELD - 56, 2);
   }
 
