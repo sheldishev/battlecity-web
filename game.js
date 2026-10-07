@@ -839,42 +839,42 @@
       theme: "city",
       foes: 20,
       maxAlive: 4,
-      player: { c: 1, r: 12 },
+      player: { c: 4, r: 12 },
       rows: [
-        ".#.........#.",
-        ".#.==...==.#.",
-        ".....###.....",
-        "#.#..#.#..#.#",
-        "..#.~~~~~.#..",
-        "....~~~~~....",
-        "**.........**",
-        "**.#.....#.**",
-        "...#.=.=.#...",
-        ".#.........#.",
-        ".#..#####..#.",
-        ".....###.....",
-        ".....#B#.....",
+        ".#.#.#.#.#.#.",
+        "#R#..U.U..#L#",
+        ".D.D.#=#.D.D.",
+        "=#.U.D.D.U.#=",
+        "..UU#...#DD..",
+        ".#.R.~~~.L.#.",
+        "L#..~~~~~..#.",
+        ".#.~~.~~.~~#.",
+        "**#.~~#~~.#**",
+        ".U#..#=#..#D.",
+        "#D.R.###.L.U#",
+        ".#U#.#####.#.",
+        "L....#B#....R",
       ],
     },
     {
       theme: "snow",
       foes: 20,
       maxAlive: 4,
-      player: { c: 0, r: 12 },
+      player: { c: 4, r: 12 },
       rows: [
-        ".............",
-        ".#.##...##.#.",
-        ".#.--...--.#.",
-        "=..--#-#--..=",
-        "...--#-#--...",
-        "..**--.--**..",
-        "..#..#-#..#..",
-        "=.**..-..**.=",
-        "..**..#..**..",
-        "....#####....",
-        "....#####....",
-        ".....###.....",
-        ".....#B#.....",
+        ".U.#.D.#.U.#.",
+        "#--.#=#.#--#.",
+        ".--.#.#.#--..",
+        "=--U#.#.#D--=",
+        "..--#...#--..",
+        "=--.#.~.#.--=",
+        "L#--~.~.~--#.",
+        ".#---~.~---#.",
+        "*--..~#~..--*",
+        ".U#--#=#--#D.",
+        "#D.--###--.U#",
+        ".--=-#####-=-",
+        ".----#B#----.",
       ],
     },
     {
@@ -883,103 +883,103 @@
       maxAlive: 4,
       player: { c: 4, r: 12 },
       rows: [
-        ".............",
-        ".##.#...#.##.",
-        "..#.~.~.~.#..",
-        "..#.~.~.~.#..",
-        "=#...#.#...#=",
-        "....#...#....",
-        "..**.....**..",
-        ".#.#..#..#.#.",
-        "..#...=...#..",
-        "..#.#####.#..",
-        "....#####....",
-        ".....###.....",
-        ".....#B#.....",
+        ".#.~.#.~.#.#.",
+        "#~#..U.U..#~#",
+        ".~.~.#=#.~.~.",
+        "=~.U.~~~.U.~=",
+        "..UU~...~DD..",
+        ".~#..~.~..#~.",
+        "L#..~.~.~..R.",
+        ".~.~~~~~~~.~.",
+        "*~.~.#.#.~.~*",
+        ".U#..~=~..#D.",
+        "#D.~.###.~.U#",
+        ".~U~.#####.~.",
+        "..~..#B#..~..",
       ],
     },
     {
       theme: "woods",
       foes: 20,
       maxAlive: 4,
-      player: { c: 0, r: 12 },
+      player: { c: 4, r: 12 },
       rows: [
-        ".............",
-        ".#.#..#..#.#.",
-        ".*.#.....#.*.",
-        "#*.**...**.*#",
-        "..*.##.#..*..",
-        "~~.*.....*~~~",
-        "**..**#**..**",
-        "..#.***.**#..",
-        ".*.#..#..#.*.",
-        "..#..###..#..",
-        "....#####....",
-        ".....###.....",
-        ".....#B#.....",
+        ".*#.*#.*#.*#.",
+        "#*#..U.U..#*#",
+        ".*.*.#=#.*.*.",
+        "=*#U#...#D#*=",
+        "..**#...#**..",
+        ".*#.*~.~*.#*.",
+        "#*.~*****~.*#",
+        ".#.***.***.#.",
+        "**#.*#=#*.#**",
+        ".U*.*###*.*D.",
+        "#D*..###..*U#",
+        ".*#*.#####.*#",
+        "..*..#B#..*..",
       ],
     },
     {
       theme: "snow",
       foes: 20,
       maxAlive: 4,
-      player: { c: 0, r: 12 },
+      player: { c: 4, r: 12 },
       rows: [
-        ".............",
-        "#.#.-...-.#.#",
-        ".#.--.-.--.#.",
-        "..---#-#---..",
-        "=.---#-#---.=",
-        "..**--.--**..",
-        ".#.--#-#--.#.",
-        "..#.#.#.#.#..",
-        "=.**..-..**.=",
-        "..#..###..#..",
-        "....#####....",
-        ".....###.....",
-        ".....#B#.....",
+        ".=.#.=.#.=.#.",
+        "#--U#=#U#--#.",
+        ".--D#.#D#--..",
+        "=UU--#-#--DD=",
+        "..--#...#--..",
+        ".--=#.~.#=--.",
+        "L#--#~#~#--#.",
+        ".#--~~~~~--#.",
+        "*--..~#~..--*",
+        ".U=--#=#--=D.",
+        "#D.--###--.U#",
+        ".=--=###=--=.",
+        ".--..#B#..--.",
       ],
     },
     {
       theme: "city",
       foes: 20,
       maxAlive: 4,
-      player: { c: 8, r: 12 },
+      player: { c: 4, r: 12 },
       rows: [
-        ".............",
-        ".#=.#...#.=#.",
-        ".#=.#.#.#.=#.",
-        "...#.....#...",
-        "=#..#...#..#=",
-        "..#..~~~..#..",
-        "..#.~~.~~.#..",
-        "#.#..~~~..#.#",
-        "..#...=...#..",
-        "..#.#####.#..",
-        "....#####....",
-        ".....###.....",
-        ".....#B#.....",
+        ".R#..#.L#..#.",
+        "#=#..U.U..#=#",
+        ".D.D.#=#.D.D.",
+        "=U.U.D.D.U.U=",
+        "..DD#...#UU..",
+        "L#..#~~~#..#.",
+        ".#..~~.~~..#.",
+        "**=.~~#~~.=**",
+        ".U#..#=#..#D.",
+        "#D#..###..#U#",
+        ".R=..###..=L.",
+        ".#=#.#####.#.",
+        "..=..#B#..=..",
       ],
     },
     {
       theme: "woods",
       foes: 20,
       maxAlive: 4,
-      player: { c: 0, r: 12 },
+      player: { c: 4, r: 12 },
       rows: [
-        ".............",
-        "#.#.#.#.#.#.#",
-        ".*.~.....~.*.",
-        ".*.~.#.#.~.*.",
-        "=*.~~.~.~~.*=",
-        "..*..#.#..*..",
-        "**..#...#..**",
-        ".#.**.*.**.#.",
-        "..#..=.=.#...",
-        ".#...###...#.",
-        "....#####....",
-        ".....###.....",
-        ".....#B#.....",
+        ".*~.*#.*~.*~.",
+        "#*#~~U.U~~#*#",
+        ".~*~.#=#.~*~.",
+        "=*~U~...~D~*=",
+        "..**#...#**..",
+        "#*.~*****~.*#",
+        ".#.***.***.#.",
+        "**~.*#=#*.~**",
+        ".U*.~###~.*D.",
+        "#D~..###..~U#",
+        ".R#~~###~~#L.",
+        ".*~..#####.~*",
+        "..~..#B#..~..",
       ],
     },
   ];
@@ -1044,9 +1044,10 @@
     ["armor", "rapid", "armor", "fast", "rapid", "armor", "rapid", "armor", "fast", "armor", "rapid", "basic"],
   ];
 
+  // ROM $E474: centers (24,24), (120,24), (216,24). Field origin is 16, so columns 0, 6 and 12.
   const SPAWNS = [
     { c: 0, r: 0 },
-    { c: 4, r: 0 },
+    { c: 6, r: 0 },
     { c: 12, r: 0 },
   ];
 
@@ -1106,6 +1107,7 @@
     queue: [],
     pickup: null,
     freeze: 0,
+    playerFreeze: 0,
     shovel: 0,
     fortified: [],
     spawnTimer: 0,
@@ -1116,6 +1118,7 @@
     levelTime: 0,
     paused: false,
     pauseAt: 0,
+    pauseMenu: 0,
     rules: "original",
     menu: 0,
     menuDir: null,
@@ -1197,9 +1200,14 @@
       score: spec.score,
       alive: true,
       invuln: 0,
+      helmet: 0,
+      stars: 0,
+      boat: false,
+      cutsTrees: false,
       travel: 0,
       warm: 0.45,
       wish: DOWN,
+      shotWait: 0,
     };
   }
 
@@ -1234,8 +1242,10 @@
     game.queue = buildQueue(game.levelIndex, level.foes);
     game.pickup = null;
     game.freeze = 0;
+    game.playerFreeze = 0;
     game.shovel = 0;
     game.fortified = [];
+    paintNest(false);
     game.spawnTimer = 0.35;
     game.spawnCursor = 0;
     game.levelTime = 0;
@@ -1311,12 +1321,19 @@
     if (!mask) return false;
     const ox = c * TILE;
     const oy = r * TILE;
-    for (let row = 0; row < 4; row++) {
-      for (let col = 0; col < 4; col++) {
-        if ((mask & brickBit(col, row)) === 0) continue;
-        const rx = ox + col * CELL;
-        const ry = oy + row * CELL;
-        if (x < rx + CELL - 0.5 && x + TANK - 0.5 > rx && y < ry + CELL - 0.5 && y + TANK - 0.5 > ry) return true;
+    // A tank fits a cleared half of a brick. A one-cell notch still counts as solid.
+    for (let qr = 0; qr < 2; qr++) {
+      for (let qc = 0; qc < 2; qc++) {
+        let solid = false;
+        for (let row = qr * 2; row < qr * 2 + 2 && !solid; row++) {
+          for (let col = qc * 2; col < qc * 2 + 2; col++) {
+            if ((mask & brickBit(col, row)) !== 0) solid = true;
+          }
+        }
+        if (!solid) continue;
+        const rx = ox + qc * HALF;
+        const ry = oy + qr * HALF;
+        if (x < rx + HALF - 0.5 && x + TANK - 0.5 > rx && y < ry + HALF - 0.5 && y + TANK - 0.5 > ry) return true;
       }
     }
     return false;
@@ -1513,12 +1530,16 @@
       tank.coast = false;
       tank.slide = 0;
       if (dir === null) return false;
-      return attemptMove(tank, dir, dt);
+      const moved = attemptMove(tank, dir, dt);
+      if (!moved) tank.travel += tank.speed * dt;
+      return moved;
     }
     if (dir !== null && !(tank.coast && tank.slide > 0)) {
       tank.coast = false;
       tank.slide = 0;
-      return attemptMove(tank, dir, dt);
+      const moved = attemptMove(tank, dir, dt);
+      if (!moved) tank.travel += tank.speed * dt;
+      return moved;
     }
     if (!tank.coast) {
       tank.coast = true;
@@ -1626,8 +1647,8 @@
       ownerType,
       alive: true,
       // Power tanks and a starred player shoot the fast shell (4px/frame). Everyone else shoots the slow one.
-      speed: (ownerType === "player" && stars >= 1) || tank.kind === "rapid" ? 480 : 240,
-      breaksSteel: ownerType === "player" && stars >= 3,
+      speed: stars >= 1 || tank.kind === "rapid" ? 480 : 240,
+      breaksSteel: stars >= 3,
     });
     play(ownerType === "player" ? sfxPlayerFire : sfxEnemyFire);
   }
@@ -1692,25 +1713,40 @@
     else play(sfxArmorHit);
   }
 
-  function baseNeighbors() {
-    const cells = [];
-    const { c, r } = game.baseCell;
-    for (let dy = -1; dy <= 1; dy++) {
-      for (let dx = -1; dx <= 1; dx++) {
-        if (dx === 0 && dy === 0) continue;
-        const cc = c + dx;
-        const rr = r + dy;
-        if (cc >= 0 && rr >= 0 && cc < COLS && rr < ROWS) cells.push({ c: cc, r: rr });
+  // ROM eagle wall: a thin Π of brick quarters around the base.
+  // Bits are NES subtiles: 0 TL, 1 TR, 2 BL, 3 BR. Each one is a 16px quadrant here.
+  const NEST = [
+    { r: 11, c: 5, bits: 0b1000 },
+    { r: 11, c: 6, bits: 0b1100 },
+    { r: 11, c: 7, bits: 0b0100 },
+    { r: 12, c: 5, bits: 0b1010 },
+    { r: 12, c: 7, bits: 0b0101 },
+  ];
+
+  function nestMask(bits) {
+    let mask = 0;
+    const origin = [
+      [0, 0],
+      [2, 0],
+      [0, 2],
+      [2, 2],
+    ];
+    for (let i = 0; i < 4; i++) {
+      if ((bits & (1 << i)) === 0) continue;
+      const [c0, r0] = origin[i];
+      for (let row = r0; row < r0 + 2; row++) {
+        for (let col = c0; col < c0 + 2; col++) mask |= brickBit(col, row);
       }
     }
-    return cells;
+    return mask;
   }
 
   function paintNest(steel) {
-    game.fortified = baseNeighbors();
-    for (const cell of game.fortified) {
-      game.map[cell.r][cell.c] = steel ? STEEL : BRICK;
-      game.mask[cell.r][cell.c] = BRICK_FULL;
+    game.fortified = [];
+    for (const wall of NEST) {
+      game.map[wall.r][wall.c] = steel ? STEEL : BRICK;
+      game.mask[wall.r][wall.c] = steel ? BRICK_FULL : nestMask(wall.bits);
+      game.fortified.push({ c: wall.c, r: wall.r });
     }
   }
 
@@ -1764,18 +1800,70 @@
     play(kind === "life" ? () => sfxLifeUp(0) : sfxPowerUpCollect);
   }
 
+  function overlapsPickup(tank, item) {
+    return (
+      tank.x < item.x + TANK &&
+      tank.x + TANK > item.x &&
+      tank.y < item.y + TANK &&
+      tank.y + TANK > item.y
+    );
+  }
+
+  function rankUpEnemy(enemy) {
+    const rank = ["basic", "fast", "rapid", "armor"];
+    const next = rank[rank.indexOf(enemy.kind) + 1];
+    if (next) {
+      const spec = KINDS[next];
+      enemy.kind = next;
+      enemy.speed = spec.speed;
+      enemy.hp = spec.hp;
+      enemy.score = spec.score;
+    } else {
+      enemy.hp = Math.min(4, enemy.hp + 1);
+    }
+    enemy.stars = Math.min(3, (enemy.stars || 0) + 1);
+  }
+
+  function applyEnemyPickup(enemy, kind) {
+    if (kind === "star") {
+      rankUpEnemy(enemy);
+    } else if (kind === "life") {
+      game.queue.push({ kind: "basic", carrier: false });
+    } else if (kind === "helmet") {
+      enemy.helmet = 10 * GAME_SEC;
+      enemy.invuln = Math.max(enemy.invuln || 0, 10 * GAME_SEC);
+    } else if (kind === "shovel") {
+      game.shovel = 0;
+      game.fortified = [];
+      paintNest(false);
+    } else if (kind === "clock") {
+      game.playerFreeze = 10 * GAME_SEC;
+    } else if (kind === "grenade") {
+      killPlayer();
+    } else if (kind === "pistol") {
+      enemy.stars = 3;
+      enemy.cutsTrees = true;
+    } else if (kind === "boat") {
+      enemy.boat = true;
+    }
+    play(sfxPowerUpCollect);
+  }
+
   function collectPickup() {
     const item = game.pickup;
     const player = game.player;
     if (!item || !player || !player.alive) return;
-    const hit =
-      player.x < item.x + TANK &&
-      player.x + TANK > item.x &&
-      player.y < item.y + TANK &&
-      player.y + TANK > item.y;
-    if (!hit) return;
+    if (!overlapsPickup(player, item)) return;
     game.pickup = null;
     applyPickup(item.kind);
+  }
+
+  function collectEnemyPickup(enemy) {
+    if (game.rules !== "pirate" || !game.pickup || !enemy.alive) return;
+    if (!overlapsPickup(enemy, game.pickup)) return;
+    const kind = game.pickup.kind;
+    game.pickup = null;
+    applyEnemyPickup(enemy, kind);
   }
 
   function killPlayer() {
@@ -1838,7 +1926,7 @@
       for (const enemy of game.enemies) {
         if (pointInTank(b.x, b.y, enemy)) {
           endBullet(b);
-          hurtEnemy(enemy);
+          if ((enemy.invuln || 0) <= 0 && (enemy.helmet || 0) <= 0) hurtEnemy(enemy);
           return;
         }
       }
@@ -1963,7 +2051,11 @@
   }
 
   function updateEnemy(enemy, dt) {
-    if (!enemy.alive || game.freeze > 0) return;
+    if (!enemy.alive) return;
+    if (enemy.helmet > 0) enemy.helmet -= dt;
+    if (enemy.invuln > 0) enemy.invuln -= dt;
+    if (enemy.shotWait > 0) enemy.shotWait -= dt;
+    if (game.freeze > 0) return;
     if (enemy.warm > 0) {
       enemy.warm -= dt;
       return;
@@ -1975,8 +2067,14 @@
       else enemy.wish = opposite(enemy.dir);
     }
     drive(enemy, enemy.wish, dt);
-    const flying = game.bullets.some((b) => b.owner === enemy && b.alive);
-    if (!flying && game.mode === "play" && frameChance(32, dt)) fire(enemy, "enemy");
+    collectEnemyPickup(enemy);
+    const slots = (enemy.stars || 0) >= 2 ? 2 : 1;
+    // A shell that just hit still holds its slot, same as the player's.
+    const used = game.bullets.filter((b) => b.alive && b.owner === enemy).length;
+    if (enemy.shotWait <= 0 && used < slots && game.mode === "play" && frameChance(32, dt)) {
+      fire(enemy, "enemy");
+      enemy.shotWait = 0.22;
+    }
   }
 
   function updateSpawns(dt) {
@@ -2017,28 +2115,31 @@
   function updatePlay(dt) {
     game.levelTime += dt;
     if (game.freeze > 0) game.freeze -= dt;
+    if (game.playerFreeze > 0) game.playerFreeze -= dt;
     if (game.shovel > 0) tickShovel(dt);
     if (game.player.alive) {
       if (game.player.shotWait > 0) game.player.shotWait -= dt;
       if (game.player.invuln > 0) game.player.invuln -= dt;
       if (game.player.helmet > 0) game.player.helmet -= dt;
+      const frozen = game.playerFreeze > 0;
       const x0 = game.player.x;
       const y0 = game.player.y;
-      drive(game.player, wantedDir(), dt);
+      if (!frozen) drive(game.player, wantedDir(), dt);
       const moved = game.player.x !== x0 || game.player.y !== y0;
-      if (game.player.coast) {
+      const pushing = wantedDir() !== null;
+      if (frozen || game.player.coast) {
         if (game.engine) {
           game.engine = false;
           play(sfxStopEngine);
         }
-      } else if (moved && !game.engine) {
+      } else if ((moved || pushing) && !game.engine) {
         game.engine = true;
         play(sfxStartEngine);
-      } else if (!moved && game.engine) {
+      } else if (!moved && !pushing && game.engine) {
         game.engine = false;
         play(sfxStopEngine);
       }
-      if (held.has("Space") || held.has("Fire")) tryShoot();
+      if (!frozen && (held.has("Space") || held.has("Fire"))) tryShoot();
       collectPickup();
       if (game.player.ghost) {
         const overlapping = game.enemies.some(
@@ -2112,8 +2213,52 @@
     if (game.mode === "select" || game.mode === "over") startGame();
   }
 
+  function steerPause(dt) {
+    const dir = wantedDir();
+    if (dir !== UP && dir !== DOWN) {
+      game.menuDir = null;
+      game.menuHold = 0;
+      return;
+    }
+    if (dir !== game.menuDir) {
+      game.menuDir = dir;
+      game.menuHold = 0;
+      game.pauseMenu = dir === UP ? 0 : 1;
+      return;
+    }
+    game.menuHold += dt;
+    if (game.menuHold < 0.18) return;
+    game.menuHold = 0;
+    game.pauseMenu = dir === UP ? 0 : 1;
+  }
+
+  function resumePlay() {
+    game.paused = false;
+    game.menuDir = null;
+    game.menuHold = 0;
+    play(sfxPause);
+  }
+
+  function leaveToTitle() {
+    game.paused = false;
+    game.pauseMenu = 0;
+    game.mode = "title";
+    game.menuDir = null;
+    game.menuHold = 0;
+    game.engine = false;
+    play(stopAllSounds);
+  }
+
+  function confirmPause() {
+    if (game.pauseMenu === 1) leaveToTitle();
+    else resumePlay();
+  }
+
   function update(dt) {
-    if (game.paused) return;
+    if (game.paused) {
+      steerPause(dt);
+      return;
+    }
     if (game.mode === "title" || game.mode === "select") steerMenu(dt);
     switch (game.mode) {
       case "intro":
@@ -2185,6 +2330,26 @@
     chrReady = true;
   };
   chrImg.src = "tiles/chr_all.png";
+  const BONUS_FILE = {
+    helmet: "tiles/bonus_helmet.png",
+    clock: "tiles/bonus_clock.png",
+    shovel: "tiles/bonus_shovel.png",
+    star: "tiles/bonus_star.png",
+    grenade: "tiles/bonus_grenade.png",
+    life: "tiles/bonus_tank.png",
+    pistol: "tiles/bonus_gun.png",
+    boat: "tiles/bonus_boat.png",
+  };
+  const bonusImg = {};
+  const bonusReady = {};
+  Object.keys(BONUS_FILE).forEach((kind) => {
+    const img = new Image();
+    img.onload = () => {
+      bonusReady[kind] = true;
+    };
+    img.src = BONUS_FILE[kind];
+    bonusImg[kind] = img;
+  });
 
   function paletteOf(pal) {
     return Array.isArray(pal) ? pal : NES_PAL[pal];
@@ -2243,12 +2408,35 @@
     return [tank.x - 3, tank.y - 3];
   }
 
+  const GLYPH = {
+    X: [".##...##", "..##.##.", "...###..", "...###..", "...###..", "..##.##.", ".##...##", "........"],
+    Z: [".######.", ".....##.", "....##..", "...##...", "..##....", ".##.....", ".######.", "........"],
+  };
+
+  function drawGlyph(rows, x, y, scale) {
+    const s = scale || 2;
+    ctx.fillStyle = NES_PAL[0][3];
+    for (let r = 0; r < 8; r++) {
+      for (let c = 0; c < 8; c++) {
+        if (rows[r][c] !== "#") continue;
+        ctx.fillRect(x + c * s, y + r * s, s, s);
+      }
+    }
+  }
+
   function drawNesText(str, x, y, scale) {
     const step = 8 * (scale || 2);
     let cx = x;
     for (const ch of str) {
       if (ch === " ") {
         cx += step;
+        continue;
+      }
+      if (GLYPH[ch]) {
+        const s = scale || 2;
+        drawGlyph(GLYPH[ch], cx, y, s);
+        // The sheet has no X, and T sits two pixels in from the left of its cell.
+        cx += step - (ch === "X" ? s * 2 : 0);
         continue;
       }
       let tile = -1;
@@ -2574,8 +2762,23 @@
     return { body: spec.body, turret: spec.turret };
   }
 
+  function drawBonus(kind, x, y) {
+    if (!bonusReady[kind]) return false;
+    ctx.drawImage(bonusImg[kind], x, y);
+    return true;
+  }
+
+  function drawPistol(x, y) {
+    ctx.fillStyle = "#d5d5d5";
+    ctx.fillRect(x + 4, y + 8, 12, 3);
+    ctx.fillRect(x + 12, y + 6, 4, 5);
+    ctx.fillStyle = "#6e3014";
+    ctx.fillRect(x + 6, y + 11, 3, 5);
+  }
+
   function drawPickup(item, t) {
     if (Math.floor(t * 6) % 2 === 0) return;
+    if (drawBonus(item.kind, item.x - 3, item.y - 3)) return;
     const tile = PICKUP_TILE[item.kind];
     if (tile != null && blitSprite(quadFrom(tile), 6, item.x - 3, item.y - 3, false)) return;
     const x = item.x + 3;
@@ -2606,17 +2809,7 @@
       ctx.fillStyle = "#fff8e8";
       ctx.fillRect(x + 9, y + 7, 2, 4);
     } else if (item.kind === "pistol") {
-      ctx.fillStyle = "#d5d5d5";
-      ctx.fillRect(x + 4, y + 8, 12, 3);
-      ctx.fillRect(x + 12, y + 6, 4, 5);
-      ctx.fillStyle = "#6e3014";
-      ctx.fillRect(x + 6, y + 11, 3, 5);
-    } else if (item.kind === "boat") {
-      ctx.fillStyle = "#c45c28";
-      ctx.fillRect(x + 4, y + 10, 12, 4);
-      ctx.fillRect(x + 6, y + 7, 8, 3);
-      ctx.fillStyle = "#f2c31a";
-      ctx.fillRect(x + 9, y + 3, 2, 5);
+      drawPistol(x, y);
     } else {
       ctx.fillStyle = "#d64545";
       ctx.fillRect(x + 6, y + 7, 8, 8);
@@ -2704,13 +2897,22 @@
       ctx.font = 'bold 16px "Courier New", Courier, monospace';
       ctx.fillText("DEFEND THE EAGLE", FIELD / 2, 112);
     }
-    drawMenuRows(["ORIGINAL", "PIRATE"], 236);
+    drawMenuRows(["ORIGINAL", "EXTRAS"], 236);
+    drawExtraMarks(236 + 28);
   }
 
-  function drawMenuRows(rows, top) {
+  function drawExtraMarks(y) {
+    const textLeft = (FIELD - "EXTRAS".length * 16) / 2;
+    const textRight = textLeft + "EXTRAS".length * 16;
+    drawBonus("pistol", textLeft - 44, y - 8);
+    drawBonus("boat", textRight + 16, y - 8);
+  }
+
+  function drawMenuRows(rows, top, selected) {
+    const cursor = selected == null ? game.menu : selected;
     rows.forEach((name, i) => {
       const y = top + i * 28;
-      if (i === game.menu) {
+      if (i === cursor) {
         ctx.fillStyle = "#f2c31a";
         ctx.fillRect(FIELD / 2 - 108, y + 2, 12, 12);
       }
@@ -2720,7 +2922,7 @@
       }
       ctx.textAlign = "center";
       ctx.textBaseline = "top";
-      ctx.fillStyle = i === game.menu ? "#fff8e8" : "#e6d7a2";
+      ctx.fillStyle = i === cursor ? "#fff8e8" : "#e6d7a2";
       ctx.font = 'bold 20px "Courier New", Courier, monospace';
       ctx.fillText(name, FIELD / 2, y);
     });
@@ -2802,10 +3004,18 @@
       blitTile(0x6a, 0, left + (i % 2) * 18, 156 + Math.floor(i / 2) * 13, true);
     }
     const icons = [];
-    if (game.player && game.player.helmet > 0) icons.push(0x80);
-    if (game.freeze > 0) icons.push(0x84);
-    if (game.shovel > 0) icons.push(0x88);
-    icons.forEach((tile, i) => blitSprite(quadFrom(tile), 6, left + i * 36, 304, false));
+    if (game.player && game.player.helmet > 0) icons.push("helmet");
+    if (game.freeze > 0 || game.playerFreeze > 0) icons.push("clock");
+    if (game.shovel > 0) icons.push("shovel");
+    if (game.player && game.player.cutsTrees) icons.push("pistol");
+    if (game.player && game.player.boat) icons.push("boat");
+    icons.forEach((kind, i) => {
+      const x = left + i * 36;
+      if (!drawBonus(kind, x, 304)) {
+        const tile = PICKUP_TILE[kind];
+        if (tile != null) blitSprite(quadFrom(tile), 6, x, 304, false);
+      }
+    });
     blitTile(0x14, 0, left, FIELD - 52, true);
     drawNesText(String(game.reserves), left + 22, FIELD - 56, 2);
   }
@@ -2854,7 +3064,7 @@
     }
     const flags = [];
     if (game.player && game.player.helmet > 0) flags.push("HELM");
-    if (game.freeze > 0) flags.push("STOP");
+    if (game.freeze > 0 || game.playerFreeze > 0) flags.push("STOP");
     if (game.shovel > 0) flags.push("WALL");
     if (game.player && game.player.boat) flags.push("BOAT");
     if (game.player && game.player.cutsTrees) flags.push("GUN");
@@ -2868,7 +3078,7 @@
     const fire = document.querySelector(".fire");
     if (!fire) return;
     const starting = game.mode === "title" || game.mode === "select" || game.mode === "over" || game.mode === "win";
-    const label = game.mode === "win" ? "MENU" : starting ? "START" : "FIRE";
+    const label = game.paused ? "OK" : game.mode === "win" ? "MENU" : starting ? "START" : "FIRE";
     if (fire.textContent !== label) {
       fire.textContent = label;
       fire.setAttribute("aria-label", label.charAt(0) + label.slice(1).toLowerCase());
@@ -2891,10 +3101,11 @@
       intro: [["ARROWS", "Move"], ["SPACE", "Fire"], ["ESC", "Pause"]],
       over: [["ENTER", "Continue"]],
       win: [["ENTER", "Menu"]],
+      paused: [["UP DOWN", "Select"], ["ENTER", "Choose"], ["ESC", "Resume"]],
       cleared: [],
       dead: [],
     };
-    const key = Object.prototype.hasOwnProperty.call(rows, game.mode) ? game.mode : "play";
+    const key = game.paused ? "paused" : Object.prototype.hasOwnProperty.call(rows, game.mode) ? game.mode : "play";
     if (hint.dataset.mode === key) return;
     hint.dataset.mode = key;
     hint.innerHTML = rows[key].map((pair) => "<span><kbd>" + pair[0] + "</kbd>" + pair[1] + "</span>").join("");
@@ -2916,7 +3127,22 @@
       else overlay("GAME OVER", "ENTER TO RESTART");
     }
     if (game.mode === "win") overlay("YOU WIN", "SCORE " + game.score + "   ENTER");
-    if (game.paused) overlay("PAUSED");
+    if (game.paused) drawPauseMenu();
+  }
+
+  function drawPauseMenu() {
+    ctx.fillStyle = "rgba(0, 0, 0, 0.55)";
+    ctx.fillRect(0, FIELD / 2 - 78, FIELD, 168);
+    if (chrReady) {
+      drawNesTextCenter("PAUSED", FIELD / 2 - 58, 2);
+    } else {
+      ctx.textAlign = "center";
+      ctx.textBaseline = "top";
+      ctx.fillStyle = "#fff4c8";
+      ctx.font = 'bold 28px "Courier New", Courier, monospace';
+      ctx.fillText("PAUSED", FIELD / 2, FIELD / 2 - 58);
+    }
+    drawMenuRows(["CONTINUE", "MENU"], FIELD / 2 - 16, game.pauseMenu);
   }
 
   function play(fn) {
@@ -2945,6 +3171,9 @@
     game.paused = !game.paused;
     if (game.paused) {
       game.pauseAt = clock;
+      game.pauseMenu = 0;
+      game.menuDir = null;
+      game.menuHold = 0;
       game.engine = false;
       play(sfxStopEngine);
     }
@@ -2956,6 +3185,10 @@
     if (e.repeat) return;
     if (e.code === "Escape") {
       togglePause();
+      return;
+    }
+    if (game.paused && e.code === "Enter") {
+      confirmPause();
       return;
     }
     holdCode(e.code);
@@ -3015,6 +3248,10 @@
     fireButton.addEventListener("pointerdown", (e) => {
       if (e.pointerType === "mouse" && e.button !== 0) return;
       e.preventDefault();
+      if (game.paused) {
+        confirmPause();
+        return;
+      }
       if (game.mode === "title" || game.mode === "select" || game.mode === "over" || game.mode === "win") {
         confirmMenu();
         return;
@@ -3033,7 +3270,8 @@
 
   canvas.addEventListener("click", () => {
     canvas.focus();
-    if (game.mode === "title" || game.mode === "select" || game.mode === "over" || game.mode === "win") confirmMenu();
+    if (game.paused) confirmPause();
+    else if (game.mode === "title" || game.mode === "select" || game.mode === "over" || game.mode === "win") confirmMenu();
   });
 
   let last = performance.now();
