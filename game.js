@@ -3159,8 +3159,8 @@
     if (game.mode === "intro") overlay("STAGE " + (game.levelIndex + 1), theme().name);
     if (game.mode === "cleared") overlay("STAGE CLEAR");
     if (game.mode === "over") {
-      if (drawGameOverBanner()) overlay("", "SPACE TO RESTART");
-      else overlay("GAME OVER", "SPACE TO RESTART");
+      if (drawGameOverBanner()) overlay("", "FIRE TO RESTART");
+      else overlay("GAME OVER", "FIRE TO RESTART");
     }
     if (game.mode === "win") overlay("YOU WIN", "SCORE " + game.score + "   SPACE");
     if (game.paused) drawPauseMenu();
