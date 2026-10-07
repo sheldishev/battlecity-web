@@ -14,11 +14,12 @@
       if (touch || handheld) document.documentElement.classList.add("touch-ui");
     })();
   </script>
-  <link rel="stylesheet" href="style.css?v=7">
+  <link rel="stylesheet" href="style.css?v=8">
 </head>
 <body>
   <main>
     <canvas id="c" width="576" height="416" tabindex="0" aria-label="Battle City"></canvas>
+    <div id="hint"></div>
     <div class="touch">
       <div class="pad" role="group" aria-label="Move">
         <button type="button" data-dir="up" aria-label="Up"><span class="arrow up"></span></button>
@@ -31,6 +32,6 @@
     </div>
   </main>
   <script src="sound.js?v=2"></script>
-  <script src="game.js?v=27"></script>
+  <script src="game.js?v=31"></script>
 </body>
 </html>

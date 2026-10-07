@@ -18,8 +18,33 @@ body {
 }
 
 main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   padding: 24px 16px calc(24px + env(safe-area-inset-bottom));
 }
+
+#hint {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 16px;
+  min-height: 28px;
+  margin-top: 10px;
+  color: #b7aa8a;
+  font: 12px "Courier New", Courier, monospace;
+  letter-spacing: 0.04em;
+}
+
+#hint kbd {
+  display: inline-block;
+  margin-right: 6px;
+  padding: 1px 5px;
+  border: 1px solid #3a3428;
+  color: #f2c31a;
+}
+
+html.touch-ui #hint { display: none; }
 
 canvas {
   display: block;

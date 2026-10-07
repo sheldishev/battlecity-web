@@ -33,6 +33,7 @@
   const ICE = 6;
   const HALF = TILE / 2;
   const CELL = TILE / 4;
+  const GAME_SEC = 64 / 60;
   const BRICK_FULL = 0xffff;
 
   const CODE_DIR = {
@@ -1115,6 +1116,11 @@
     levelTime: 0,
     paused: false,
     pauseAt: 0,
+    rules: "original",
+    menu: 0,
+    menuDir: null,
+    menuHold: 0,
+    shovelSteel: true,
   };
 
   function parseMap(rows) {
@@ -1166,11 +1172,15 @@
       stars: 0,
       helmet: 0,
       alive: true,
-      invuln: 2,
+      invuln: 3 * GAME_SEC,
       ghost: false,
       travel: 0,
       warm: 0,
       shotWait: 0,
+      boat: false,
+      cutsTrees: false,
+      coast: false,
+      slide: 0,
     };
   }
 
@@ -1194,12 +1204,8 @@
   }
 
   function startGame() {
-    const failed = game.mode === "over";
-    if (failed) game.levelIndex = Math.max(0, game.levelIndex - 1);
-    else {
-      game.score = 0;
-      game.levelIndex = 0;
-    }
+    if (game.mode === "over") game.levelIndex = Math.max(0, game.levelIndex - 1);
+    else game.score = 0;
     game.reserves = 3;
     game.player = null;
     game.paused = false;
@@ -1210,6 +1216,8 @@
   function beginLevel() {
     const level = LEVELS[game.levelIndex];
     const keptStars = game.player ? game.player.stars : 0;
+    const keptBoat = game.player ? game.player.boat : false;
+    const keptCut = game.player ? game.player.cutsTrees : false;
     const parsed = parseMap(level.rows);
     game.map = parsed.map;
     game.mask = parsed.mask;
@@ -1218,6 +1226,8 @@
     game.baseAlive = true;
     game.player = makePlayer(level.player);
     game.player.stars = keptStars;
+    game.player.boat = keptBoat;
+    game.player.cutsTrees = keptCut;
     game.enemies = [];
     game.bullets = [];
     game.explosions = [];
@@ -1243,8 +1253,12 @@
     game.player.dir = UP;
     game.player.stars = 0;
     game.player.helmet = 0;
+    game.player.boat = false;
+    game.player.cutsTrees = false;
+    game.player.coast = false;
+    game.player.slide = 0;
     game.player.alive = true;
-    game.player.invuln = 2.2;
+    game.player.invuln = 3 * GAME_SEC;
     game.player.ghost = true;
     game.player.travel = 0;
     game.mode = "play";
@@ -1386,7 +1400,9 @@
           if (brickBlocks(x, y, c, r)) return true;
         } else if (t === STEEL) {
           if (brickBlocks(x, y, c, r)) return true;
-        } else if (t === WATER || t === BASE) return true;
+        } else if (t === WATER) {
+          if (!self || !self.boat) return true;
+        } else if (t === BASE) return true;
       }
     }
     const bodies = [game.player, ...game.enemies];
@@ -1473,8 +1489,10 @@
     return r >= 0 && c >= 0 && r < ROWS && c < COLS && game.map[r][c] === ICE;
   }
 
-  // Ice keeps the current direction until the tank reaches the next grid slot.
+  // After the player lets go on ice, the tank coasts for 28 frames or until it leaves the ice.
+  // Tracks stay put and the engine stays quiet for that stretch.
   function drive(tank, dir, dt) {
+    if (tank === game.player) return drivePlayer(tank, dir, dt);
     if (!onIce(tank)) {
       if (dir === null) return false;
       return attemptMove(tank, dir, dt);
@@ -1488,6 +1506,34 @@
       if (step(tank, tank.dir, Math.min(dist, remain))) return true;
     }
     return attemptMove(tank, dir, dt);
+  }
+
+  function drivePlayer(tank, dir, dt) {
+    if (!onIce(tank)) {
+      tank.coast = false;
+      tank.slide = 0;
+      if (dir === null) return false;
+      return attemptMove(tank, dir, dt);
+    }
+    if (dir !== null && !(tank.coast && tank.slide > 0)) {
+      tank.coast = false;
+      tank.slide = 0;
+      return attemptMove(tank, dir, dt);
+    }
+    if (!tank.coast) {
+      tank.coast = true;
+      tank.slide = 28 / 60;
+    }
+    tank.slide -= dt;
+    if (tank.slide <= 0) {
+      tank.coast = false;
+      tank.slide = 0;
+      return false;
+    }
+    const travel = tank.travel;
+    const moved = step(tank, tank.dir, tank.speed * dt);
+    tank.travel = travel;
+    return moved;
   }
 
   function wantedDir() {
@@ -1614,22 +1660,26 @@
   }
 
   function spawnPickup(enemy) {
-    const kinds = ["star", "life", "helmet", "shovel", "clock", "grenade"];
+    const table = game.rules === "pirate"
+      ? ["helmet", "clock", "shovel", "star", "grenade", "life", "pistol", "boat"]
+      : ["helmet", "clock", "shovel", "star", "grenade", "life", "grenade", "star"];
     game.pickup = {
-      kind: kinds[Math.floor(Math.random() * kinds.length)],
+      kind: table[(Math.random() * table.length) | 0],
       x: enemy.x,
       y: enemy.y,
     };
   }
 
-  function killEnemy(enemy, drop) {
+  function killEnemy(enemy, award) {
     if (!enemy.alive) return;
     enemy.alive = false;
-    game.score += enemy.score || 100;
+    if (award !== false) {
+      game.score += enemy.score || 100;
+      floatScore(enemy.score || 100, enemy.x, enemy.y);
+    }
     boom(enemy.x + TANK / 2, enemy.y + TANK / 2, true);
-    floatScore(enemy.score || 100, enemy.x, enemy.y);
     play(sfxEntityKill);
-    if (drop !== false && enemy.carrier) {
+    if (award !== false && enemy.carrier) {
       spawnPickup(enemy);
       play(sfxPowerUpAppear);
     }
@@ -1656,30 +1706,36 @@
     return cells;
   }
 
-  function fortifyBase() {
-    if (game.shovel <= 0) {
-      game.fortified = [];
-      for (const cell of baseNeighbors()) {
-        const tile = game.map[cell.r][cell.c];
-        if (tile === BRICK || tile === EMPTY) {
-          game.map[cell.r][cell.c] = STEEL;
-          game.mask[cell.r][cell.c] = BRICK_FULL;
-          game.fortified.push(cell);
-        }
-      }
+  function paintNest(steel) {
+    game.fortified = baseNeighbors();
+    for (const cell of game.fortified) {
+      game.map[cell.r][cell.c] = steel ? STEEL : BRICK;
+      game.mask[cell.r][cell.c] = BRICK_FULL;
     }
-    game.shovel = 12;
   }
 
-  function revertFort() {
-    for (const cell of game.fortified) {
-      if (game.map[cell.r][cell.c] === STEEL) {
-        game.map[cell.r][cell.c] = BRICK;
-        game.mask[cell.r][cell.c] = BRICK_FULL;
-      }
+  function fortifyBase() {
+    paintNest(true);
+    game.shovel = 20 * GAME_SEC;
+    game.shovelSteel = true;
+  }
+
+  function tickShovel(dt) {
+    const blink = 4 * GAME_SEC;
+    const wasBlink = game.shovel < blink;
+    game.shovel -= dt;
+    if (game.shovel <= 0) {
+      paintNest(false);
+      game.shovel = 0;
+      game.fortified = [];
+      return;
     }
-    game.fortified = [];
-    game.shovel = 0;
+    if (game.shovel >= blink) return;
+    const steel = Math.floor((blink - game.shovel) / (16 / 60)) % 2 === 0;
+    if (!wasBlink || steel !== game.shovelSteel) {
+      game.shovelSteel = steel;
+      paintNest(steel);
+    }
   }
 
   function applyPickup(kind) {
@@ -1689,16 +1745,21 @@
     } else if (kind === "life") {
       game.reserves = Math.min(9, game.reserves + 1);
     } else if (kind === "helmet") {
-      player.helmet = 8;
-      player.invuln = Math.max(player.invuln, 8);
+      player.helmet = 10 * GAME_SEC;
+      player.invuln = Math.max(player.invuln, 10 * GAME_SEC);
     } else if (kind === "shovel") {
       fortifyBase();
     } else if (kind === "clock") {
-      game.freeze = 7;
+      game.freeze = 10 * GAME_SEC;
     } else if (kind === "grenade") {
       for (const enemy of game.enemies) {
         if (enemy.alive) killEnemy(enemy, false);
       }
+    } else if (kind === "pistol") {
+      player.stars = 3;
+      player.cutsTrees = true;
+    } else if (kind === "boat") {
+      player.boat = true;
     }
     play(kind === "life" ? () => sfxLifeUp(0) : sfxPowerUpCollect);
   }
@@ -1849,6 +1910,14 @@
     }
   }
 
+  function cutBush(bullet) {
+    if (!bullet.owner || !bullet.owner.cutsTrees || bullet.spent) return;
+    const c = Math.floor(bullet.x / TILE);
+    const r = Math.floor(bullet.y / TILE);
+    if (r < 0 || c < 0 || r >= ROWS || c >= COLS) return;
+    if (game.map[r][c] === BUSH) game.map[r][c] = EMPTY;
+  }
+
   function updateBullets(dt) {
     for (const b of game.bullets) {
       if (!b.alive || game.mode !== "play") continue;
@@ -1887,6 +1956,7 @@
         b.x += v.x * hop;
         b.y += v.y * hop;
         left -= hop;
+        cutBush(b);
         hitBullet(b);
       }
     }
@@ -1947,10 +2017,7 @@
   function updatePlay(dt) {
     game.levelTime += dt;
     if (game.freeze > 0) game.freeze -= dt;
-    if (game.shovel > 0) {
-      game.shovel -= dt;
-      if (game.shovel <= 0) revertFort();
-    }
+    if (game.shovel > 0) tickShovel(dt);
     if (game.player.alive) {
       if (game.player.shotWait > 0) game.player.shotWait -= dt;
       if (game.player.invuln > 0) game.player.invuln -= dt;
@@ -1959,7 +2026,12 @@
       const y0 = game.player.y;
       drive(game.player, wantedDir(), dt);
       const moved = game.player.x !== x0 || game.player.y !== y0;
-      if (moved && !game.engine) {
+      if (game.player.coast) {
+        if (game.engine) {
+          game.engine = false;
+          play(sfxStopEngine);
+        }
+      } else if (moved && !game.engine) {
         game.engine = true;
         play(sfxStartEngine);
       } else if (!moved && game.engine) {
@@ -1995,8 +2067,54 @@
     }
   }
 
+  function nudgeMenu(dir) {
+    if (game.mode === "title") {
+      game.menu = dir === UP ? 0 : 1;
+      return;
+    }
+    const count = LEVELS.length;
+    game.levelIndex = (game.levelIndex + (dir === UP ? 1 : count - 1)) % count;
+  }
+
+  function steerMenu(dt) {
+    const dir = wantedDir();
+    if (dir !== UP && dir !== DOWN) {
+      game.menuDir = null;
+      game.menuHold = 0;
+      return;
+    }
+    if (dir !== game.menuDir) {
+      game.menuDir = dir;
+      game.menuHold = 0;
+      nudgeMenu(dir);
+      return;
+    }
+    game.menuHold += dt;
+    if (game.menuHold < 0.18) return;
+    game.menuHold = 0;
+    nudgeMenu(dir);
+  }
+
+  function confirmMenu() {
+    if (game.mode === "title") {
+      game.rules = game.menu === 0 ? "original" : "pirate";
+      game.mode = "select";
+      game.menuDir = null;
+      game.menuHold = 0;
+      return;
+    }
+    if (game.mode === "win") {
+      game.mode = "title";
+      game.menuDir = null;
+      game.menuHold = 0;
+      return;
+    }
+    if (game.mode === "select" || game.mode === "over") startGame();
+  }
+
   function update(dt) {
     if (game.paused) return;
+    if (game.mode === "title" || game.mode === "select") steerMenu(dt);
     switch (game.mode) {
       case "intro":
         game.introTimer -= dt;
@@ -2487,6 +2605,18 @@
       ctx.strokeRect(x + 5.5, y + 5.5, 9, 9);
       ctx.fillStyle = "#fff8e8";
       ctx.fillRect(x + 9, y + 7, 2, 4);
+    } else if (item.kind === "pistol") {
+      ctx.fillStyle = "#d5d5d5";
+      ctx.fillRect(x + 4, y + 8, 12, 3);
+      ctx.fillRect(x + 12, y + 6, 4, 5);
+      ctx.fillStyle = "#6e3014";
+      ctx.fillRect(x + 6, y + 11, 3, 5);
+    } else if (item.kind === "boat") {
+      ctx.fillStyle = "#c45c28";
+      ctx.fillRect(x + 4, y + 10, 12, 4);
+      ctx.fillRect(x + 6, y + 7, 8, 3);
+      ctx.fillStyle = "#f2c31a";
+      ctx.fillRect(x + 9, y + 3, 2, 5);
     } else {
       ctx.fillStyle = "#d64545";
       ctx.fillRect(x + 6, y + 7, 8, 8);
@@ -2564,23 +2694,58 @@
     if (chrReady) {
       drawNesTextCenter("BATTLE CITY", 48, 4);
       drawNesTextCenter("DEFEND THE EAGLE", 108, 2);
-      if (Math.floor(t * 2) % 2 === 0) drawNesTextCenter("ENTER TO START", 250, 2);
+    } else {
+      ctx.textAlign = "center";
+      ctx.textBaseline = "top";
+      ctx.fillStyle = "#f2c31a";
+      ctx.font = 'bold 40px "Courier New", Courier, monospace';
+      ctx.fillText("BATTLE CITY", FIELD / 2, 58);
+      ctx.fillStyle = "#e6d7a2";
+      ctx.font = 'bold 16px "Courier New", Courier, monospace';
+      ctx.fillText("DEFEND THE EAGLE", FIELD / 2, 112);
+    }
+    drawMenuRows(["ORIGINAL", "PIRATE"], 236);
+  }
+
+  function drawMenuRows(rows, top) {
+    rows.forEach((name, i) => {
+      const y = top + i * 28;
+      if (i === game.menu) {
+        ctx.fillStyle = "#f2c31a";
+        ctx.fillRect(FIELD / 2 - 108, y + 2, 12, 12);
+      }
+      if (chrReady) {
+        drawNesTextCenter(name, y, 2);
+        return;
+      }
+      ctx.textAlign = "center";
+      ctx.textBaseline = "top";
+      ctx.fillStyle = i === game.menu ? "#fff8e8" : "#e6d7a2";
+      ctx.font = 'bold 20px "Courier New", Courier, monospace';
+      ctx.fillText(name, FIELD / 2, y);
+    });
+  }
+
+  function drawStageSelect() {
+    for (let r = 0; r < ROWS; r++) {
+      for (let c = 0; c < COLS; c++) drawSteel(c * TILE, r * TILE, THEMES.city.steel, BRICK_FULL);
+    }
+    ctx.fillStyle = "#000";
+    ctx.fillRect(64, 156, FIELD - 128, 88);
+    const stage = "STAGE  " + (game.levelIndex + 1);
+    const name = theme().name;
+    if (chrReady) {
+      drawNesTextCenter(stage, 176, 2);
+      drawNesTextCenter(name, 208, 2);
       return;
     }
-
     ctx.textAlign = "center";
     ctx.textBaseline = "top";
-    ctx.fillStyle = "#f2c31a";
-    ctx.font = 'bold 40px "Courier New", Courier, monospace';
-    ctx.fillText("BATTLE CITY", FIELD / 2, 58);
-    ctx.fillStyle = "#e6d7a2";
+    ctx.fillStyle = "#111";
+    ctx.font = 'bold 28px "Courier New", Courier, monospace';
+    ctx.fillText(stage, FIELD / 2, 176);
     ctx.font = 'bold 16px "Courier New", Courier, monospace';
-    ctx.fillText("DEFEND THE EAGLE", FIELD / 2, 112);
-    if (Math.floor(t * 2) % 2 === 0) {
-      ctx.fillStyle = "#fff8e8";
-      ctx.font = 'bold 20px "Courier New", Courier, monospace';
-      ctx.fillText("ENTER TO START", FIELD / 2, 250);
-    }
+    ctx.fillText(name, FIELD / 2, 214);
   }
 
   function overlay(line1, line2) {
@@ -2627,7 +2792,7 @@
     drawNesText(String(game.mode === "title" ? 1 : game.levelIndex + 1), left + 40, 108, 2);
     if (game.mode !== "title") drawNesText(theme().name, left, 136, 2);
     const roster =
-      game.mode === "title"
+      game.mode === "title" || game.mode === "select"
         ? []
         : game.enemies
             .filter((enemy) => enemy.alive)
@@ -2665,7 +2830,7 @@
     if (game.mode !== "title") label(theme().name, x + 18, 136, 12, theme().accent);
 
     const roster =
-      game.mode === "title"
+      game.mode === "title" || game.mode === "select"
         ? []
         : game.enemies
             .filter((enemy) => enemy.alive)
@@ -2691,6 +2856,8 @@
     if (game.player && game.player.helmet > 0) flags.push("HELM");
     if (game.freeze > 0) flags.push("STOP");
     if (game.shovel > 0) flags.push("WALL");
+    if (game.player && game.player.boat) flags.push("BOAT");
+    if (game.player && game.player.cutsTrees) flags.push("GUN");
     if (flags.length) label(flags.join(" "), x + 18, 322, 12, "#fff4c8");
 
     label("LIVES", x + 18, FIELD - 72, 13, "#b7aa8a");
@@ -2700,11 +2867,11 @@
   function syncFireLabel() {
     const fire = document.querySelector(".fire");
     if (!fire) return;
-    const starting = game.mode === "title" || game.mode === "over" || game.mode === "win";
-    const label = starting ? "START" : "FIRE";
+    const starting = game.mode === "title" || game.mode === "select" || game.mode === "over" || game.mode === "win";
+    const label = game.mode === "win" ? "MENU" : starting ? "START" : "FIRE";
     if (fire.textContent !== label) {
       fire.textContent = label;
-      fire.setAttribute("aria-label", starting ? "Start" : "Fire");
+      fire.setAttribute("aria-label", label.charAt(0) + label.slice(1).toLowerCase());
     }
   }
 
@@ -2714,13 +2881,34 @@
     button.classList.toggle("is-down", game.paused);
   }
 
+  function syncHint() {
+    const hint = document.getElementById("hint");
+    if (!hint) return;
+    const rows = {
+      title: [["UP DOWN", "Select"], ["ENTER", "Start"]],
+      select: [["UP DOWN", "Stage"], ["ENTER", "Start"]],
+      play: [["ARROWS", "Move"], ["SPACE", "Fire"], ["ESC", "Pause"]],
+      intro: [["ARROWS", "Move"], ["SPACE", "Fire"], ["ESC", "Pause"]],
+      over: [["ENTER", "Continue"]],
+      win: [["ENTER", "Menu"]],
+      cleared: [],
+      dead: [],
+    };
+    const key = Object.prototype.hasOwnProperty.call(rows, game.mode) ? game.mode : "play";
+    if (hint.dataset.mode === key) return;
+    hint.dataset.mode = key;
+    hint.innerHTML = rows[key].map((pair) => "<span><kbd>" + pair[0] + "</kbd>" + pair[1] + "</span>").join("");
+  }
+
   function render(t) {
     const shown = game.paused ? game.pauseAt : t;
     if (game.mode === "title") drawTitle(shown);
+    else if (game.mode === "select") drawStageSelect();
     else drawWorld(shown);
     drawHud();
     syncFireLabel();
     syncPauseButton();
+    syncHint();
     if (game.mode === "intro") overlay("STAGE " + (game.levelIndex + 1), theme().name);
     if (game.mode === "cleared") overlay("STAGE CLEAR");
     if (game.mode === "over") {
@@ -2753,7 +2941,7 @@
   }
 
   function togglePause() {
-    if (game.mode === "title" || game.mode === "over" || game.mode === "win") return;
+    if (game.mode === "title" || game.mode === "select" || game.mode === "over" || game.mode === "win") return;
     game.paused = !game.paused;
     if (game.paused) {
       game.pauseAt = clock;
@@ -2771,8 +2959,8 @@
       return;
     }
     holdCode(e.code);
-    if (e.code === "Enter" && (game.mode === "title" || game.mode === "over" || game.mode === "win")) {
-      startGame();
+    if (e.code === "Enter" && (game.mode === "title" || game.mode === "select" || game.mode === "over" || game.mode === "win")) {
+      confirmMenu();
     }
   });
 
@@ -2827,8 +3015,8 @@
     fireButton.addEventListener("pointerdown", (e) => {
       if (e.pointerType === "mouse" && e.button !== 0) return;
       e.preventDefault();
-      if (game.mode === "title" || game.mode === "over" || game.mode === "win") {
-        startGame();
+      if (game.mode === "title" || game.mode === "select" || game.mode === "over" || game.mode === "win") {
+        confirmMenu();
         return;
       }
       fireButton.classList.add("is-down");
@@ -2845,18 +3033,25 @@
 
   canvas.addEventListener("click", () => {
     canvas.focus();
-    if (game.mode === "title" || game.mode === "over" || game.mode === "win") startGame();
+    if (game.mode === "title" || game.mode === "select" || game.mode === "over" || game.mode === "win") confirmMenu();
   });
 
   let last = performance.now();
   let clock = 0;
+  let soundAcc = 0;
   function frame(now) {
-    const dt = Math.min(0.033, Math.max(0, (now - last) / 1000) || 0);
+    const frameDt = Math.max(0, (now - last) / 1000) || 0;
+    const dt = Math.min(0.033, frameDt);
     last = now;
     clock = now / 1000;
     update(dt);
     render(clock);
-    if (typeof soundTick === "function") soundTick();
+    // The sound engine counts NES frames. The screen may refresh faster than 60 Hz.
+    soundAcc = Math.min(0.25, soundAcc + frameDt);
+    while (soundAcc >= 1 / 60) {
+      soundAcc -= 1 / 60;
+      if (typeof soundTick === "function") soundTick();
+    }
     requestAnimationFrame(frame);
   }
   requestAnimationFrame(frame);
