@@ -1368,6 +1368,29 @@
     return false;
   }
 
+  // Brick and cement are four 16px tiles. A power shot removes the tiles it touches.
+  function chipTiles(c, r, x0, y0, x1, y1) {
+    let mask = game.mask[r][c] || BRICK_FULL;
+    const before = mask;
+    const ox = c * TILE;
+    const oy = r * TILE;
+    for (let qy = 0; qy < 2; qy++) {
+      for (let qx = 0; qx < 2; qx++) {
+        const rx = ox + qx * HALF;
+        const ry = oy + qy * HALF;
+        if (rx >= x1 || rx + HALF <= x0 || ry >= y1 || ry + HALF <= y0) continue;
+        for (let row = qy * 2; row < qy * 2 + 2; row++) {
+          for (let col = qx * 2; col < qx * 2 + 2; col++) mask &= ~brickBit(col, row);
+        }
+      }
+    }
+    mask &= BRICK_FULL;
+    if (mask === before) return false;
+    game.mask[r][c] = mask;
+    if (mask === 0) game.map[r][c] = EMPTY;
+    return true;
+  }
+
   function chipShot(bullet) {
     const [x0, y0] = shotRect(bullet);
     const alongX = bullet.dir === LEFT || bullet.dir === RIGHT;
@@ -1952,12 +1975,8 @@
             destroyBase();
             return;
           }
-          if (tile !== BRICK && tile !== STEEL) continue;
-          const bits = game.mask[rr][cc] || (tile === STEEL ? BRICK_FULL : 0);
-          if (!rectHitsMask(bits, cc, rr, x0, y0, x1, y1)) continue;
-          game.mask[rr][cc] = 0;
-          game.map[rr][cc] = EMPTY;
-          broke = true;
+          if (tile !== STEEL && tile !== BRICK) continue;
+          if (chipTiles(cc, rr, x0, y0, x1, y1)) broke = true;
         }
       }
       if (broke) {
