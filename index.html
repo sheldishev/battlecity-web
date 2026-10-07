@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Battle City</title>
+  <script>
+    (function () {
+      var touch = navigator.maxTouchPoints > 0 || "ontouchstart" in window;
+      var handheld = false;
+      try {
+        handheld = matchMedia("(pointer: coarse), (any-pointer: coarse), (hover: none), (max-width: 900px)").matches;
+      } catch (err) {}
+      if (touch || handheld) document.documentElement.classList.add("touch-ui");
+    })();
+  </script>
+  <link rel="stylesheet" href="style.css?v=7">
+</head>
+<body>
+  <main>
+    <canvas id="c" width="576" height="416" tabindex="0" aria-label="Battle City"></canvas>
+    <div class="touch">
+      <div class="pad" role="group" aria-label="Move">
+        <button type="button" data-dir="up" aria-label="Up"><span class="arrow up"></span></button>
+        <button type="button" data-dir="left" aria-label="Left"><span class="arrow left"></span></button>
+        <button type="button" data-dir="down" aria-label="Down"><span class="arrow down"></span></button>
+        <button type="button" data-dir="right" aria-label="Right"><span class="arrow right"></span></button>
+      </div>
+      <button type="button" class="pause" aria-label="Pause">PAUSE</button>
+      <button type="button" class="fire" aria-label="Start">START</button>
+    </div>
+  </main>
+  <script src="sound.js?v=1"></script>
+  <script src="game.js?v=26"></script>
+</body>
+</html>
