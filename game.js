@@ -3131,13 +3131,13 @@
     const hint = document.getElementById("hint");
     if (!hint) return;
     const rows = {
-      title: [["UP DOWN", "Select"], ["ENTER", "Start"]],
-      select: [["UP DOWN", "Stage"], ["ENTER", "Start"]],
+      title: [["UP DOWN", "Select"], ["SPACE", "Start"]],
+      select: [["UP DOWN", "Stage"], ["SPACE", "Start"]],
       play: [["ARROWS", "Move"], ["SPACE", "Fire"], ["ESC", "Pause"]],
       intro: [["ARROWS", "Move"], ["SPACE", "Fire"], ["ESC", "Pause"]],
-      over: [["ENTER", "Continue"]],
-      win: [["ENTER", "Menu"]],
-      paused: [["UP DOWN", "Select"], ["ENTER", "Choose"], ["ESC", "Resume"]],
+      over: [["SPACE", "Continue"]],
+      win: [["SPACE", "Menu"]],
+      paused: [["UP DOWN", "Select"], ["SPACE", "Choose"], ["ESC", "Resume"]],
       cleared: [],
       dead: [],
     };
@@ -3159,10 +3159,10 @@
     if (game.mode === "intro") overlay("STAGE " + (game.levelIndex + 1), theme().name);
     if (game.mode === "cleared") overlay("STAGE CLEAR");
     if (game.mode === "over") {
-      if (drawGameOverBanner()) overlay("", "ENTER TO RESTART");
-      else overlay("GAME OVER", "ENTER TO RESTART");
+      if (drawGameOverBanner()) overlay("", "SPACE TO RESTART");
+      else overlay("GAME OVER", "SPACE TO RESTART");
     }
-    if (game.mode === "win") overlay("YOU WIN", "SCORE " + game.score + "   ENTER");
+    if (game.mode === "win") overlay("YOU WIN", "SCORE " + game.score + "   SPACE");
     if (game.paused) drawPauseMenu();
   }
 
@@ -3223,14 +3223,13 @@
       togglePause();
       return;
     }
-    if (game.paused && e.code === "Enter") {
-      confirmPause();
+    const choosing = game.mode === "title" || game.mode === "select" || game.mode === "over" || game.mode === "win";
+    if ((e.code === "Enter" || e.code === "Space") && (game.paused || choosing)) {
+      if (game.paused) confirmPause();
+      else confirmMenu();
       return;
     }
     holdCode(e.code);
-    if (e.code === "Enter" && (game.mode === "title" || game.mode === "select" || game.mode === "over" || game.mode === "win")) {
-      confirmMenu();
-    }
   });
 
   window.addEventListener("keyup", (e) => {
